@@ -74,7 +74,7 @@ class neuralNetwork:
 
 # number of input, hidden and output nodes
 input_nodes = 784
-hidden_nodes = 100
+hidden_nodes = 200
 output_nodes = 10
 
 # learning rate
@@ -85,7 +85,7 @@ n = neuralNetwork(input_nodes, hidden_nodes, output_nodes, learning_rate)
 
 # load the mnist training date CSV file into a list
 # https://pjreddie.com/projects/mnist-in-csv/  <<  full 60000 training data
-training_data_file = open("mnist_dataset/mnist_train_100.csv", 'r')
+training_data_file = open("mnist_dataset/mnist_train.csv", 'r')
 training_data_list = training_data_file.readlines()
 training_data_file.close()
 
@@ -114,69 +114,27 @@ for e in range(epochs):
 scoreboard = []
 
 ### Using existing test data ###
-# # load the mnist test data CSV file into a list
-# # https://pjreddie.com/projects/mnist-in-csv/  <<  full 10000 testing data
-# test_data_file = open("mnist_dataset/mnist_test_10.csv", 'r')
-# test_data_list = test_data_file.readlines()
-# test_data_file.close()
+# load the mnist test data CSV file into a list
+# https://pjreddie.com/projects/mnist-in-csv/  <<  full 10000 testing data
+test_data_file = open("mnist_dataset/mnist_test_10.csv", 'r')
+test_data_list = test_data_file.readlines()
+test_data_file.close()
 
 
-# # test the neural network
+# test the neural network
 
-# # go through all records in the test data set
-# for record in test_data_list:
-#     # split the records by ',' commas
-#     all_values = record.split(',')
-#     # correct answer is first value
-#     correct_label = int(all_values[0])
-#     print(correct_label, "correct label")
-#     # scale and shift the inputs
-#     inputs = (numpy.asfarray(all_values[1:]) / 255.0 * 0.99) + 0.01
-#     # query the network
-#     outputs = n.query(inputs)
-#     # the index of the highest value corresponds to the label
-#     label = numpy.argmax(outputs)
-#     print(label, "network's answer")
-#     # append correct or incorrect to list
-#     if (label == correct_label):
-#         # network's answer matches correct answer, add 1 to scoreboard
-#         scoreboard.append(1)
-#     else:
-#         # network's answer doesn't match correct answer, add 0 to scoreboard
-#         scoreboard.append(0)
-#         pass
-#     pass
-### Using existing test data ###
-
-### Using 28x28 images ###
-dataset = []
-for image_file_name in glob.glob('images/test_image_*?.png'):
-    print ("loading ... ", image_file_name)
-    # use the filename to set the correct label
-    label = int(image_file_name[-5:-4])
-    # load image data from png files into an array
-    img_array = imageio.imread(image_file_name, as_gray=True)
-    # reshape from 28x28 to list of 784 values, invert values
-    img_data  = 255.0 - img_array.reshape(784)
-    # then scale data to range from 0.01 to 1.0
-    img_data = (img_data / 255.0 * 0.99) + 0.01    
-    # append label and image data to test data set
-    record = numpy.append(label,img_data)
-    dataset.append(record)
-    # show picture
-    #plt.imshow(record[1:].reshape(28,28), cmap='Greys', interpolation='None')
-    #plt.show()
-    pass
-
-for record in dataset:
+# go through all records in the test data set
+for record in test_data_list:
+    # split the records by ',' commas
+    all_values = record.split(',')
     # correct answer is first value
-    correct_label = int(record[0])
+    correct_label = int(all_values[0])
     print(correct_label, "correct label")
-    # shift the inputs
-    inputs = numpy.asfarray(record[1:])
+    # scale and shift the inputs
+    inputs = (numpy.asfarray(all_values[1:]) / 255.0 * 0.99) + 0.01
     # query the network
     outputs = n.query(inputs)
-    # index of the highest value corresponds to the label
+    # the index of the highest value corresponds to the label
     label = numpy.argmax(outputs)
     print(label, "network's answer")
     # append correct or incorrect to list
@@ -188,6 +146,48 @@ for record in dataset:
         scoreboard.append(0)
         pass
     pass
+### Using existing test data ###
+
+### Using 28x28 images ###
+# dataset = []
+# for image_file_name in glob.glob('images/test_image_*?.png'):
+#     print ("loading ... ", image_file_name)
+#     # use the filename to set the correct label
+#     label = int(image_file_name[-5:-4])
+#     # load image data from png files into an array
+#     img_array = imageio.imread(image_file_name, as_gray=True)
+#     # reshape from 28x28 to list of 784 values, invert values
+#     img_data  = 255.0 - img_array.reshape(784)
+#     # then scale data to range from 0.01 to 1.0
+#     img_data = (img_data / 255.0 * 0.99) + 0.01    
+#     # append label and image data to test data set
+#     record = numpy.append(label,img_data)
+#     dataset.append(record)
+#     # show picture
+#     #plt.imshow(record[1:].reshape(28,28), cmap='Greys', interpolation='None')
+#     #plt.show()
+#     pass
+
+# for record in dataset:
+#     # correct answer is first value
+#     correct_label = int(record[0])
+#     print(correct_label, "correct label")
+#     # shift the inputs
+#     inputs = numpy.asfarray(record[1:])
+#     # query the network
+#     outputs = n.query(inputs)
+#     # index of the highest value corresponds to the label
+#     label = numpy.argmax(outputs)
+#     print(label, "network's answer")
+#     # append correct or incorrect to list
+#     if (label == correct_label):
+#         # network's answer matches correct answer, add 1 to scoreboard
+#         scoreboard.append(1)
+#     else:
+#         # network's answer doesn't match correct answer, add 0 to scoreboard
+#         scoreboard.append(0)
+#         pass
+#     pass
 ### Using 28x28 images ###
 
 # calculate the performance score, the fraction of correct answers
