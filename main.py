@@ -85,7 +85,7 @@ n = neuralNetwork(input_nodes, hidden_nodes, output_nodes, learning_rate)
 
 # load the mnist training date CSV file into a list
 # https://pjreddie.com/projects/mnist-in-csv/  <<  full 60000 training data
-training_data_file = open("mnist_dataset/mnist_train.csv", 'r')
+training_data_file = open("mnist_dataset/mnist_train_100.csv", 'r')
 training_data_list = training_data_file.readlines()
 training_data_file.close()
 
